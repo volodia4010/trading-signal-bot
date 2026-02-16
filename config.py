@@ -12,8 +12,10 @@ load_dotenv()
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
 
-# ── Exchange ────────────────────────────────────────────────
-EXCHANGE_ID = "bybit"
+# ── Exchange (data source for signals) ──────────────────
+# binanceusdm = Binance USDT-M futures (not blocked on cloud servers)
+# bybit = Bybit (blocked on AWS/Render IPs)
+EXCHANGE_ID = os.getenv("EXCHANGE_ID", "binanceusdm")
 
 # ── Bybit Trading API ─────────────────────────────────────
 BYBIT_API_KEY = os.getenv("BYBIT_API_KEY", "")

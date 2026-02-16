@@ -5,9 +5,12 @@ v4: Auto-trading via Bybit API + exit tracking + marathon.
 
 import asyncio
 import logging
+import os
 import signal as os_signal
 import sys
+import threading
 from datetime import datetime, timezone, timedelta
+from http.server import HTTPServer, BaseHTTPRequestHandler
 from typing import Optional
 
 import config
@@ -241,6 +244,24 @@ async def main():
         )
     except Exception as e:
         logger.error(f"Could not send startup message: {e}")
+
+    # ── Start health-check HTTP server (for Render) ────
+    port = int(os.environ.get("PORT", 10000))
+
+    class HealthHandler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b"OK")
+        def log_message(self, *args):
+            pass  # suppress logs
+
+    def run_health_server():
+        server = HTTPServer(("", port), HealthHandler)
+        logger.info(f"🌐 Health server on port {port}")
+        server.serve_forever()
+
+    threading.Thread(target=run_health_server, daemon=True).start()
 
     # ── Start all loops ─────────────────────────────────
     await telegram_polling(bot)

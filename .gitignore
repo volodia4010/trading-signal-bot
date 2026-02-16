@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+
+# Data files (regenerated at runtime)
+marathon_data.json
+
+# IDE
+.vscode/
+.idea/

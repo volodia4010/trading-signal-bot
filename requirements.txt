@@ -1,0 +1,5 @@
+ccxt>=4.0
+pandas>=2.0
+pandas-ta>=0.3
+python-telegram-bot>=20.0
+python-dotenv>=1.0
